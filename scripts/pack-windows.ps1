@@ -76,21 +76,3 @@ $SlimFilename = "cuda-trt-${CudaVer}-${TrtVer}-win64.7z"
 Write-Output "Slim package: $SlimFilename ($([math]::Round((Get-Item "$RepoDir\$SlimFilename").Length / 1MB))MB)"
 Remove-Item $SlimDir -Recurse
 Write-Output "::endgroup::"
-
-# ── Pack tools package ────────────────────────────────────────────────────────
-Write-Output "::group::Pack tools package ..."
-$ToolsDir = "$env:TEMP\cuda-trt-tools"
-New-Item -ItemType Directory -Force -Path "$ToolsDir\TensorRT\bin" | Out-Null
-New-Item -ItemType Directory -Force -Path "$ToolsDir\TensorRT\lib" | Out-Null
-
-Copy-Item "$TrtDir\bin\trtexec.exe"                  "$ToolsDir\TensorRT\bin\"
-Get-Item  "$TrtDir\lib\nvinfer_plugin_10*"           | Copy-Item -Destination "$ToolsDir\TensorRT\lib\" -ErrorAction SilentlyContinue
-Get-Item  "$TrtDir\lib\nvinfer_onnxparser_10*"       | Copy-Item -Destination "$ToolsDir\TensorRT\lib\" -ErrorAction SilentlyContinue
-Get-Item  "$TrtDir\lib\nvonnxparser_10*"             | Copy-Item -Destination "$ToolsDir\TensorRT\lib\" -ErrorAction SilentlyContinue
-Get-Item  "$TrtDir\lib\nvrtc*"                       | Copy-Item -Destination "$ToolsDir\TensorRT\lib\" -ErrorAction SilentlyContinue
-
-$ToolsFilename = "cuda-trt-tools-${CudaVer}-${TrtVer}-win64.7z"
-7z a -mx=5 "$RepoDir\$ToolsFilename" "$ToolsDir\*" | Out-Null
-Write-Output "Tools package: $ToolsFilename ($([math]::Round((Get-Item "$RepoDir\$ToolsFilename").Length / 1MB))MB)"
-Remove-Item $ToolsDir -Recurse
-Write-Output "::endgroup::"
