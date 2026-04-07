@@ -21,9 +21,6 @@ CUDA_VER=$(jq -r ".${DISTRO}.cuda" "$REPO_DIR/versions.json")
 TRT_VER=$(jq -r ".${DISTRO}.tensorrt" "$REPO_DIR/versions.json")
 TRT_VER_SHORT=$(echo "$TRT_VER" | cut -d. -f1-3)
 
-CUDA_MAJOR=$(echo "$CUDA_VER" | cut -d. -f1)
-CUDA_MINOR=$(echo "$CUDA_VER" | cut -d. -f2)
-
 echo "Platform : $BUNDLE"
 echo "CUDA     : $CUDA_VER"
 echo "TensorRT : $TRT_VER"
@@ -39,8 +36,9 @@ wget -q "https://developer.download.nvidia.com/compute/cuda/repos/ubuntu${UBUNTU
 sudo dpkg -i /tmp/cuda.deb
 sudo apt-get update -qq
 sudo apt-get install -y \
-    "cuda-cudart-dev-${CUDA_MAJOR}-${CUDA_MINOR}" \
-    "cuda-nvcc-${CUDA_MAJOR}-${CUDA_MINOR}"
+    "cuda-cudart-dev-${CUDA_VER}" \
+    "cuda-cudart-${CUDA_VER}" \
+    "cuda-nvcc-${CUDA_VER}"
 echo "::endgroup::"
 
 # ── Download TensorRT tarball ─────────────────────────────────────────────────
