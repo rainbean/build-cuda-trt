@@ -35,7 +35,10 @@ UBUNTU_VER=$(lsb_release -rs | tr -d '.')
 wget -q "https://developer.download.nvidia.com/compute/cuda/repos/ubuntu${UBUNTU_VER}/${DISTRO}/cuda-keyring_1.1-1_all.deb" -O /tmp/cuda.deb
 sudo dpkg -i /tmp/cuda.deb
 sudo apt-get update -qq
-sudo apt-get install -y "cuda-toolkit-${CUDA_VER}"
+sudo apt-get install -y \
+    "cuda-cudart-dev-${CUDA_VER}" \
+    "cuda-cudart-${CUDA_VER}" \
+    "cuda-nvcc-${CUDA_VER}"
 echo "::endgroup::"
 
 # ── Download TensorRT tarball ─────────────────────────────────────────────────
@@ -62,10 +65,10 @@ cp "$CUDA_ROOT/bin/nvcc" "$SLIM_DIR/cuda/bin/"
 # CUDA: all runtime headers
 cp -r "$CUDA_ROOT/include/." "$SLIM_DIR/cuda/include/"
 # CUDA: static runtime lib (for CUDA::cudart_static)
-cp -a "$CUDA_ROOT/lib64/libcudart_static.a" "$SLIM_DIR/cuda/lib64/"
-cp -a "$CUDA_ROOT/lib64/libcudart.so*" "$SLIM_DIR/cuda/lib64/"
+cp -a "$CUDA_ROOT/lib64"/libcudart_static.a" "$SLIM_DIR/cuda/lib64/"
+cp -a "$CUDA_ROOT/lib64"/libcudart.so* "$SLIM_DIR/cuda/lib64/"
 # CUDA: linker stub (needed at link time even with static cudart)
-cp "$CUDA_ROOT/lib64/stubs/libcuda.so" "$SLIM_DIR/cuda/lib64/stubs/"
+cp -a "$CUDA_ROOT/lib64/stubs"/libcuda.so" "$SLIM_DIR/cuda/lib64/stubs/"
 
 # TensorRT: headers
 cp -r "$TRT_DIR/include/." "$SLIM_DIR/TensorRT/include/"
