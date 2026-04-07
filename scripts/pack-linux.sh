@@ -8,17 +8,17 @@ REPO_DIR="$(dirname "$SCRIPT_DIR")"
 # detect architecture
 ARCH=$(uname -m)
 if [ "$ARCH" = "aarch64" ]; then
-    PLATFORM_KEY="arm64"
+    DISTRO="arm64"
     BUNDLE="linux-arm64"
 else
-    ARCH=x86_64
-    PLATFORM_KEY="x64"
+    ARCH="x86_64"
+    DISTRO="x86_64"
     BUNDLE="linux"
 fi
 
 # read versions for this platform
-CUDA_VER=$(jq -r ".${PLATFORM_KEY}.cuda" "$REPO_DIR/versions.json")
-TRT_VER=$(jq -r ".${PLATFORM_KEY}.tensorrt" "$REPO_DIR/versions.json")
+CUDA_VER=$(jq -r ".${DISTRO}.cuda" "$REPO_DIR/versions.json")
+TRT_VER=$(jq -r ".${DISTRO}.tensorrt" "$REPO_DIR/versions.json")
 TRT_VER_SHORT=$(echo "$TRT_VER" | cut -d. -f1-3)
 
 CUDA_MAJOR=$(echo "$CUDA_VER" | cut -d. -f1)
@@ -35,7 +35,7 @@ trap "rm -rf $WORK_DIR" EXIT
 # ── Install minimal CUDA (headers + libcudart_static.a + stub) ────────────────
 echo "::group::Install CUDA dev package ..."
 UBUNTU_VER=$(lsb_release -rs | tr -d '.')
-wget -q "https://developer.download.nvidia.com/compute/cuda/repos/ubuntu${UBUNTU_VER}/${ARCH}/cuda-keyring_1.1-1_all.deb" -O /tmp/cuda.deb
+wget -q "https://developer.download.nvidia.com/compute/cuda/repos/ubuntu${UBUNTU_VER}/${DISTRO}/cuda-keyring_1.1-1_all.deb" -O /tmp/cuda.deb
 sudo dpkg -i /tmp/cuda.deb
 sudo apt-get update -qq
 sudo apt-get install -y "cuda-cudart-dev-${CUDA_MAJOR}-${CUDA_MINOR}"
