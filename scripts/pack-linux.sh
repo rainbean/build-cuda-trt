@@ -8,7 +8,7 @@ REPO_DIR="$(dirname "$SCRIPT_DIR")"
 # detect architecture
 ARCH=$(uname -m)
 if [ "$ARCH" = "aarch64" ]; then
-    DISTRO="arm64"
+    DISTRO="sbsa"
     BUNDLE="linux-arm64"
 else
     ARCH="x86_64"
