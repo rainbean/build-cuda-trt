@@ -54,11 +54,14 @@ CUDA_ROOT="/usr/local/cuda-${CUDA_VER}"
 echo "::group::Pack slim package ..."
 SLIM_DIR="$WORK_DIR/slim"
 mkdir -p \
+    "$SLIM_DIR/cuda/bin" \
     "$SLIM_DIR/cuda/include" \
     "$SLIM_DIR/cuda/lib64/stubs" \
     "$SLIM_DIR/TensorRT/include" \
     "$SLIM_DIR/TensorRT/lib"
 
+# CUDA: compiler
+cp "$CUDA_ROOT/bin/nvcc" "$SLIM_DIR/cuda/bin/"
 # CUDA: all runtime headers
 cp -r "$CUDA_ROOT/include/." "$SLIM_DIR/cuda/include/"
 # CUDA: static runtime lib (for CUDA::cudart_static)

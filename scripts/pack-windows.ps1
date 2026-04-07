@@ -48,11 +48,14 @@ $TrtDir = "$TrtExtract\TensorRT-$TrtVer"
 # ── Pack slim package ─────────────────────────────────────────────────────────
 Write-Output "::group::Pack slim package ..."
 $SlimDir = "$env:TEMP\cuda-trt-slim"
+New-Item -ItemType Directory -Force -Path "$SlimDir\cuda\bin"           | Out-Null
 New-Item -ItemType Directory -Force -Path "$SlimDir\cuda\include"       | Out-Null
 New-Item -ItemType Directory -Force -Path "$SlimDir\cuda\lib\x64"       | Out-Null
 New-Item -ItemType Directory -Force -Path "$SlimDir\TensorRT\include"   | Out-Null
 New-Item -ItemType Directory -Force -Path "$SlimDir\TensorRT\lib"       | Out-Null
 
+# CUDA: compiler
+Copy-Item "$CudaRoot\bin\nvcc.exe"  "$SlimDir\cuda\bin\"
 # CUDA: headers
 Copy-Item "$CudaRoot\include\*" "$SlimDir\cuda\include\" -Recurse -Force
 # CUDA: static runtime lib + stub
