@@ -27,7 +27,6 @@ jobs:
 
       - name: Pack slim and tools packages
         working-directory: ${{ github.workspace }}
-        shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
         run: ${{ github.workspace }}/scripts/${{ matrix.command }}
 
       - name: Configure AWS Credentials
