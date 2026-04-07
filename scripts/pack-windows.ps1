@@ -60,6 +60,7 @@ Copy-Item "$CudaRoot\bin\nvcc.exe"  "$SlimDir\cuda\bin\"
 Copy-Item "$CudaRoot\include\*" "$SlimDir\cuda\include\" -Recurse -Force
 # CUDA: static runtime lib + stub
 Copy-Item "$CudaRoot\lib\x64\cudart_static.lib"  "$SlimDir\cuda\lib\x64\"
+Copy-Item "$CudaRoot\lib\x64\cudart.lib"         "$SlimDir\cuda\lib\x64\"
 Copy-Item "$CudaRoot\lib\x64\cuda.lib"           "$SlimDir\cuda\lib\x64\"
 
 # TensorRT: headers
