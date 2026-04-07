@@ -35,10 +35,7 @@ UBUNTU_VER=$(lsb_release -rs | tr -d '.')
 wget -q "https://developer.download.nvidia.com/compute/cuda/repos/ubuntu${UBUNTU_VER}/${DISTRO}/cuda-keyring_1.1-1_all.deb" -O /tmp/cuda.deb
 sudo dpkg -i /tmp/cuda.deb
 sudo apt-get update -qq
-sudo apt-get install -y \
-    "cuda-cudart-dev-${CUDA_VER}" \
-    "cuda-cudart-${CUDA_VER}" \
-    "cuda-nvcc-${CUDA_VER}"
+sudo apt-get install -y "cuda-toolkit-${CUDA_VER}"
 echo "::endgroup::"
 
 # ── Download TensorRT tarball ─────────────────────────────────────────────────
