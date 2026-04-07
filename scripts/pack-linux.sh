@@ -72,11 +72,9 @@ cp "$CUDA_ROOT/lib64/stubs/libcuda.so" "$SLIM_DIR/cuda/lib64/stubs/"
 # TensorRT: headers
 cp -r "$TRT_DIR/include/." "$SLIM_DIR/TensorRT/include/"
 # TensorRT: core inference libs
-cp "$TRT_DIR/lib"/libnvinfer.so*            "$SLIM_DIR/TensorRT/lib/"
-cp "$TRT_DIR/lib"/libnvinfer_lean.so*       "$SLIM_DIR/TensorRT/lib/" 2>/dev/null || true
-cp "$TRT_DIR/lib"/libnvinfer_dispatch.so*   "$SLIM_DIR/TensorRT/lib/" 2>/dev/null || true
-# TensorRT: static lib (kept for future static-link investigation)
-cp "$TRT_DIR/lib"/libnvinfer_static.a       "$SLIM_DIR/TensorRT/lib/" 2>/dev/null || true
+cp -a "$TRT_DIR/lib"/libnvinfer.so*            "$SLIM_DIR/TensorRT/lib/"
+cp -a "$TRT_DIR/lib"/libnvinfer_lean.so*       "$SLIM_DIR/TensorRT/lib/" 2>/dev/null || true
+cp -a "$TRT_DIR/lib"/libnvinfer_dispatch.so*   "$SLIM_DIR/TensorRT/lib/" 2>/dev/null || true
 
 SLIM_FILENAME="cuda-trt-${CUDA_VER}-${TRT_VER}-${BUNDLE}.tar.zst"
 tar "-I zstd -3 -T4 --long=27" -cf "$REPO_DIR/$SLIM_FILENAME" -C "$SLIM_DIR" .
@@ -90,11 +88,11 @@ mkdir -p \
     "$TOOLS_DIR/TensorRT/bin" \
     "$TOOLS_DIR/TensorRT/lib"
 
-cp "$TRT_DIR/bin/trtexec"                           "$TOOLS_DIR/TensorRT/bin/"
-cp "$TRT_DIR/lib"/libnvinfer_plugin.so*             "$TOOLS_DIR/TensorRT/lib/" 2>/dev/null || true
-cp "$TRT_DIR/lib"/libnvinfer_onnxparser.so*         "$TOOLS_DIR/TensorRT/lib/" 2>/dev/null || true
-cp "$TRT_DIR/lib"/libnvonnxparser.so*               "$TOOLS_DIR/TensorRT/lib/" 2>/dev/null || true
-cp "$TRT_DIR/lib"/libnvrtc.so*                      "$TOOLS_DIR/TensorRT/lib/" 2>/dev/null || true
+cp -a "$TRT_DIR/bin/trtexec"                           "$TOOLS_DIR/TensorRT/bin/"
+cp -a "$TRT_DIR/lib"/libnvinfer_plugin.so*             "$TOOLS_DIR/TensorRT/lib/" 2>/dev/null || true
+cp -a "$TRT_DIR/lib"/libnvinfer_onnxparser.so*         "$TOOLS_DIR/TensorRT/lib/" 2>/dev/null || true
+cp -a "$TRT_DIR/lib"/libnvonnxparser.so*               "$TOOLS_DIR/TensorRT/lib/" 2>/dev/null || true
+cp -a "$TRT_DIR/lib"/libnvrtc.so*                      "$TOOLS_DIR/TensorRT/lib/" 2>/dev/null || true
 
 TOOLS_FILENAME="cuda-trt-tools-${CUDA_VER}-${TRT_VER}-${BUNDLE}.tar.zst"
 tar "-I zstd -3 -T4 --long=27" -cf "$REPO_DIR/$TOOLS_FILENAME" -C "$TOOLS_DIR" .
