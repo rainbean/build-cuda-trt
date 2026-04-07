@@ -65,10 +65,10 @@ cp "$CUDA_ROOT/bin/nvcc" "$SLIM_DIR/cuda/bin/"
 # CUDA: all runtime headers
 cp -r "$CUDA_ROOT/include/." "$SLIM_DIR/cuda/include/"
 # CUDA: static runtime lib (for CUDA::cudart_static)
-cp -a "$CUDA_ROOT/lib64"/libcudart_static.a" "$SLIM_DIR/cuda/lib64/"
+cp -a "$CUDA_ROOT/lib64"/libcudart_static.a "$SLIM_DIR/cuda/lib64/"
 cp -a "$CUDA_ROOT/lib64"/libcudart.so* "$SLIM_DIR/cuda/lib64/"
 # CUDA: linker stub (needed at link time even with static cudart)
-cp -a "$CUDA_ROOT/lib64/stubs"/libcuda.so" "$SLIM_DIR/cuda/lib64/stubs/"
+cp -a "$CUDA_ROOT/lib64/stubs"/libcuda.so "$SLIM_DIR/cuda/lib64/stubs/"
 
 # TensorRT: headers
 cp -r "$TRT_DIR/include/." "$SLIM_DIR/TensorRT/include/"
