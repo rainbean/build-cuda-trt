@@ -1,7 +1,10 @@
 name: Build Packages
 
+# trigger on tags
 on:
-  workflow_dispatch:
+  push:
+    tags:
+      - "*"
 
 permissions:
   id-token: write
