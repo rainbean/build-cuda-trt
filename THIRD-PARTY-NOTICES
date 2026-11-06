@@ -1,16 +1,30 @@
-This repository's build scripts produce distribution archives that bundle
-components from third-party vendors. This file identifies those components
-and their applicable licenses.
+This repository's build scripts produce archives that bundle components from
+third-party vendors. This file identifies those components and their
+applicable licenses.
 
 ================================================================================
-NVIDIA CUDA Toolkit
+INTERNAL USE ONLY
 ================================================================================
+The archives produced by this repository (cuda-trt-*.tar.zst, cuda-trt-*.7z)
+are build inputs for internal use only. They must not be redistributed
+outside the organization, in whole or in part, as a standalone package.
+
+The NVIDIA licenses below allow only specific runtime files to be
+redistributed, only when incorporated into an application that has material
+additional functionality, and only unmodified. The compiler (nvcc), most
+header files and the import/stub libraries in these archives are not
+redistributable. See "Redistributable in a shipped product" under each entry.
+
+--------------------------------------------------------------------------------
+NVIDIA CUDA Toolkit
+--------------------------------------------------------------------------------
 Copyright (c) NVIDIA Corporation
 SPDX-License-Identifier: LicenseRef-NVIDIA-CUDA-Toolkit-EULA
-https://developer.nvidia.com/cuda-toolkit
+https://docs.nvidia.com/cuda/eula/
 
-The following CUDA Toolkit files are physically included in the distribution
-archives produced by this repository:
+Bundled versions: 12.8 (x86_64, Windows), 13.0 (aarch64/SBSA)
+
+Files in the archives:
 
   Linux (cuda-trt-*-linux*.tar.zst):
     cuda/bin/nvcc
@@ -26,61 +40,75 @@ archives produced by this repository:
     cuda/lib/x64/cudart.lib
     cuda/lib/x64/cuda.lib
 
-Redistribution of the CUDA runtime libraries (cudart) and associated headers
-is permitted under the terms of the NVIDIA CUDA Toolkit End User License
-Agreement. See the full EULA at:
-https://docs.nvidia.com/cuda/eula/
+Redistributable in a shipped product (EULA Attachment A, "CUDA Runtime"):
+    libcudart.so*, libcudart_static.a        (Linux)
+    cudart64_*.dll, cudart_static.lib        (Windows; the DLL is not in
+                                              these archives)
 
-Bundled versions: 12.8 (x86_64, Windows), 13.0 (aarch64/SBSA)
+Internal use only (EULA section 1.1.2): nvcc, header files other than those
+listed in Attachment A, the libcuda.so link stub, cudart.lib and cuda.lib.
 
-================================================================================
+--------------------------------------------------------------------------------
 NVIDIA TensorRT
-================================================================================
+--------------------------------------------------------------------------------
 Copyright (c) NVIDIA Corporation
-SPDX-License-Identifier: LicenseRef-NVIDIA-TensorRT-EULA
-https://developer.nvidia.com/tensorrt
+SPDX-License-Identifier: LicenseRef-NVIDIA-TensorRT-SLA
+https://docs.nvidia.com/deeplearning/tensorrt/latest/reference/sla.html
 
-The following TensorRT files are physically included in the distribution
-archives produced by this repository:
+Bundled versions: 10.8.0.43 (x86_64, Windows), 10.14.1.48 (aarch64/SBSA)
+
+Files in the archives:
 
   Linux (cuda-trt-*-linux*.tar.zst):
     TensorRT/include/**  (all headers)
     TensorRT/lib/libnvinfer.so*
-    TensorRT/lib/libnvinfer_lean.so*   (if present in release)
+    TensorRT/lib/libnvinfer_lean.so*      (if present in release)
     TensorRT/lib/libnvinfer_dispatch.so*  (if present in release)
 
   Windows (cuda-trt-*-win64.7z):
     TensorRT/include/**  (all headers)
     TensorRT/lib/nvinfer_10.dll
     TensorRT/lib/nvinfer_10.lib
-    TensorRT/lib/nvinfer_lean_10.*     (if present in release)
-    TensorRT/lib/nvinfer_dispatch_10.* (if present in release)
+    TensorRT/lib/nvinfer_lean_10.*        (if present in release)
+    TensorRT/lib/nvinfer_dispatch_10.*    (if present in release)
 
-Redistribution of TensorRT runtime libraries is permitted under the terms of
-the NVIDIA TensorRT Software License Agreement. See the full license at:
-https://docs.nvidia.com/deeplearning/tensorrt/latest/getting-started/license/
+Redistributable in a shipped product (SLA supplement, "the runtime files .so
+and .dll"):
+    libnvinfer*.so*                          (Linux)
+    nvinfer*_10.dll                          (Windows)
 
-Bundled versions: 10.8.0.43 (x86_64, Windows), 10.14.1.48 (aarch64/SBSA)
+Internal use only: header files and .lib import libraries. TensorRT is
+licensed only for applications running on systems with NVIDIA GPUs.
 
 ================================================================================
 Build-time dependencies — NOT bundled
 ================================================================================
 
-The following tools are used during the build process but are NOT included in
-the distribution archives:
+--------------------------------------------------------------------------------
+CUDA APT packages — Linux build dependency
+--------------------------------------------------------------------------------
+cuda-keyring, cuda-cudart-dev, cuda-cudart and cuda-nvcc are NOT bundled as
+packages. They are installed at build time and only the files listed above
+are extracted. They are subject to the NVIDIA CUDA Toolkit EULA.
+https://docs.nvidia.com/cuda/eula/
 
-  APT packages (Linux build environment only):
-    cuda-keyring, cuda-nvcc, and other development packages installed via APT
-    are used to set up the build environment. Only the specific files listed
-    above are extracted and bundled; the packages themselves are not shipped.
+--------------------------------------------------------------------------------
+7-Zip — Windows build dependency
+--------------------------------------------------------------------------------
+7-Zip is NOT bundled in this distribution. It is downloaded at build time
+and is subject to the GNU LGPL (with unRAR restriction).
+https://www.7-zip.org/
 
-  7-Zip (Windows build only):
-    Used to create the .7z archive. Not bundled.
-    https://www.7-zip.org/  (LGPL / unRAR license)
+--------------------------------------------------------------------------------
+winget — Windows build dependency
+--------------------------------------------------------------------------------
+winget is NOT bundled in this distribution. It is used at build time to
+install the CUDA Toolkit and 7-Zip, and is subject to the MIT License.
+https://github.com/microsoft/winget-cli
 
-  winget (Windows build only):
-    Used to install the CUDA Toolkit on the build runner. Not bundled.
-
-  GitHub Actions tooling (CI/CD only):
-    actions/checkout, aws-actions/configure-aws-credentials, and
-    Cyberboss/install-winget are used in CI/CD pipelines only. Not bundled.
+--------------------------------------------------------------------------------
+GitHub Actions — CI/CD dependency
+--------------------------------------------------------------------------------
+actions/checkout, aws-actions/configure-aws-credentials and
+Cyberboss/install-winget are NOT bundled in this distribution. They are used
+in CI/CD pipelines only and are subject to their respective licenses.
